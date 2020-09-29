@@ -9,14 +9,14 @@ jobs:
     steps:
       - name: Get latest Brotli version
         id: latest-brotli-bin-version
-        run: echo "::set-output name=version::$(${git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/google/brotli.git '*.*.*' | tail -n 1 | cut -d/ -f3}//v})"
+        run: echo "::set-output name=version::$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/google/brotli.git '*.*.*' | tail -n 1 | cut -d/ -f3)"
 
       - name: Clone repository
         uses: actions/checkout@v2
 
       - name: Get Brolti PHP latest tag
         id: latest-brotli-php-version
-        run: echo "::set-output name=version::$(git describe --abbrev=0 --tags)"
+        run: echo "::set-output name=version::$(git -c 'versionsort.suffix=-' ls-remote --exit-code --refs --sort='version:refname' --tags https://github.com/vdechenaux/brotli-bin-i386.git '*.*.*' | tail -n 1 | cut -d/ -f3)"
 
       - name: test
         run: echo ${{steps.latest-brotli-bin-version.outputs.version}} ${{steps.latest-brotli-php-version.outputs.version}}
